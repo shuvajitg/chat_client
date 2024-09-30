@@ -4,6 +4,7 @@ import Header from "./Header";
 import Sidebar from "./Sidebar";
 import { Route, Routes } from "react-router-dom";
 import Contact from "./Contact";
+import Chat from "./Chat";
 
 export default function Dashboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -21,7 +22,7 @@ export default function Dashboard() {
           <Routes>
             <Route path="/" element={<DashboardContent />} />
             <Route path="/contacts" element={<Contact />} />
-            <Route path="/message" element={<DashboardContent />} />
+            <Route path="/message" element={<Chat />} />
           </Routes>
         </main>
       </div>
