@@ -18,7 +18,7 @@ function CreatContext() {
         }
         fetchmessage();
         
-    })
+    },[])
 
 
     return{
