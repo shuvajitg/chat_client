@@ -2,13 +2,13 @@ import { useState, useEffect } from "react";
 import supabase from "@/supabaseClient";
 
 function CreatContext() {
-    const [messages, setMessage] = useState([]);
+    const [messageData, setMessage] = useState([]);
     useEffect(() => {
         const fetchmessage = async () => {
             const { data, error } = await supabase
                 .from('chat')
                 .select()
-                .range(0, messages.length)
+                .range(0, messageData.length)
                 .order('id', { ascending: false });
             if (error) {
                 console.error('Error fetching message:', error);
@@ -18,11 +18,11 @@ function CreatContext() {
         }
         fetchmessage();
         
-    },[])
+    },[messageData.length])
 
 
     return{
-        messages
+        messageData
     }
 
 
