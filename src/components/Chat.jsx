@@ -6,11 +6,15 @@ import supabase from "@/supabaseClient";
 import toast from "react-hot-toast";
 import { BiSend } from "react-icons/bi";
 import { IconButton } from "@chakra-ui/react";
+import useMessage from "@/hook/useMessage";
 
 function Chat() {
   const [message, setMessage] = useState("");
   const [isSending, setIsSending] = useState(false);
 
+  const { messages } = useMessage()
+  // console.log(messages);
+  
   const handelSend = async (e) => {
     e.preventDefault();
     setIsSending(true);
@@ -46,27 +50,30 @@ function Chat() {
           </div>
           <span className="text-gray-400 text-xs">Last active 1 hour ago</span>
         </CardHeader>
-        <CardContent className="h-96 flex gap-2 bg-slate-700 p-4 text-white overflow-hidden ">
-          <div className="flex flex-col justify-start items-center space-x-2">
-            <img
-              className="w-8 h-8 rounded-full"
-              src="https://example.com/user-profile-picture.jpg"
-              alt="User profile picture"
-            />
-            <div>
-              <span className="text-xs font-semibold">User Name</span>
-            </div>
-          </div>
-          <div className="rounded ">
-            <p className=" w-80 px-5 mb-2">
-              Hello, how are you today? Lorem ipsum dolor, sit amet consectetur
-              adipisicing elit. Impedit quae autem deserunt itaque modi
-              voluptatem minus, perferendis quisquam inventore aliquid suscipit
-              alias? Laboriosam facere, sequi omnis architecto velit temporibus
-              nobis!
-            </p>
-            <span className="text-gray-400 flex justify-end">10:30 AM</span>
-          </div>
+        <CardContent className="h-96 flex flex-col gap-2 bg-slate-700 p-4 text-white overflow-hidden ">
+          {
+            !messages ?
+               <div>Loading messages...</div> :
+            
+            messages.map((data)=>(
+              <div key={data.id} className="flex">
+                <div className="flex flex-col justify-start items-center space-x-2">
+                  <img
+                    className="w-4 h-4 rounded-full"
+                    src="https://example.com/user-profile-picture.jpg"
+                    alt="User profile picture"
+                  />
+                </div>
+                <div className="rounded ">
+                  <p className=" w-80 px-5 mb-2">
+                    {data.message}
+                  </p>
+                  <span className="text-gray-400 flex justify-end">{data.created_at}</span>
+                </div>
+              </div>
+
+            ))
+          }
         </CardContent>
         <CardFooter className="mt-3 flex gap-4">
           <Input
