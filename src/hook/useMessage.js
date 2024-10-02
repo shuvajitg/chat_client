@@ -12,12 +12,12 @@ function useMessage() {
         table: "chat",
       },
       (payload) => {
-        console.log({payload});
-        setMessage(pre => [...pre,payload.new]);
+        // console.log({payload});
+        setMessage((pre)=>[...pre,payload.new]);
       }
     ).subscribe()
     return () => supabase.removeChannel(channel)
-  }, [messages.length]);
+  }, [messages]);
 
   return {
     messages

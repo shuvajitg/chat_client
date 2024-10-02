@@ -7,37 +7,46 @@ import toast from "react-hot-toast";
 import { BiSend } from "react-icons/bi";
 import { IconButton } from "@chakra-ui/react";
 import useMessage from "@/hook/useMessage";
+import { useAppContext } from "@/context/creatContext";
 
 function Chat() {
   const [message, setMessage] = useState("");
   const [isSending, setIsSending] = useState(false);
 
-  const { messages } = useMessage()
+  const { messages } = useMessage();
   // console.log(messages);
-  
+
+  const { messageData } = useAppContext();
+  console.log(messageData);
+  if (!messageData) {
+    return <div>Loading...</div>;
+  }
+
   const handelSend = async (e) => {
     e.preventDefault();
     setIsSending(true);
-    if(!message) return;
+    if (!message) return;
     try {
-      const {error} = await supabase.from("chat").insert([{message: message}])
-      setMessage("")
-      
-      if(error) {
-        toast.error("Error sending message:", {duration: 5000})
-        throw new error.message
+      const { error } = await supabase
+        .from("chat")
+        .insert([{ message: message }]);
+      setMessage("");
+
+      if (error) {
+        toast.error("Error sending message:", { duration: 5000 });
+        throw new error.message();
       }
     } catch (error) {
       console.error("Error sending message:", error);
-    }finally{
+    } finally {
       setIsSending(false);
     }
-  }
+  };
 
   return (
     <div className="flex items-center justify-center px-72 mt-10 rounded-sm">
       <Card className="w-full h-auto">
-        <CardHeader className='h-20 mb-3 -mt-2'>
+        <CardHeader className="h-20 mb-3 -mt-2">
           <div className="flex items-center space-x-2">
             <img
               className="w-10 h-10 rounded-full"
@@ -50,12 +59,11 @@ function Chat() {
           </div>
           <span className="text-gray-400 text-xs">Last active 1 hour ago</span>
         </CardHeader>
-        <CardContent className="h-96 flex flex-col gap-2 bg-slate-700 p-4 text-white overflow-hidden ">
-          {
-            !messages ?
-               <div>Loading messages...</div> :
-            
-            messages.map((data)=>(
+        <CardContent className="h-96 flex flex-col gap-2 bg-slate-700 p-4 text-white overflow-auto ">
+          {!messages ? (
+            <div>Loading messages...</div>
+          ) : (
+            messages?.map((data) => (
               <div key={data.id} className="flex">
                 <div className="flex flex-col justify-start items-center space-x-2">
                   <img
@@ -65,15 +73,14 @@ function Chat() {
                   />
                 </div>
                 <div className="rounded ">
-                  <p className=" w-80 px-5 mb-2">
-                    {data.message}
-                  </p>
-                  <span className="text-gray-400 flex justify-end">{data.created_at}</span>
+                  <p className=" w-80 px-5 mb-2">{data.message}</p>
+                  <span className="text-gray-400 flex justify-end">
+                    {data.created_at}
+                  </span>
                 </div>
               </div>
-
             ))
-          }
+          )}
         </CardContent>
         <CardFooter className="mt-3 flex gap-4">
           <Input
@@ -85,16 +92,16 @@ function Chat() {
             placeholder="Type a message..."
           />
           <IconButton
-              // variant="outline"
-              colorScheme="teal"
-              aria-label="Send"
-              fontSize="25px"
-              icon={<BiSend />}
-              type="submit"
-              disabled={!message}
-              isLoading={isSending}
-              onClick={handelSend}
-            />
+            // variant="outline"
+            colorScheme="teal"
+            aria-label="Send"
+            fontSize="25px"
+            icon={<BiSend />}
+            type="submit"
+            disabled={!message}
+            isLoading={isSending}
+            onClick={handelSend}
+          />
         </CardFooter>
       </Card>
     </div>
