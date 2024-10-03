@@ -3,6 +3,7 @@ import supabase from "@/supabaseClient";
 
 const AppContext = createContext({});
 
+// eslint-disable-next-line react/prop-types
 const AppContextProvider = ({ children }) => {
   let myChannel = null;
   const [messageData, setMessage] = useState([]);
@@ -23,6 +24,7 @@ const AppContextProvider = ({ children }) => {
     return () => {
       supabase.removeChannel(myChannel);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [myChannel]);
 
   useEffect(() => {
@@ -34,7 +36,7 @@ const AppContextProvider = ({ children }) => {
 
   const handleNewMessage = async (payload) => {
     setMessage((pre) => [...pre, payload.new]);
-    setNewIncomingMessageTrigger(payload.new);
+    // setNewIncomingMessageTrigger(payload.new);
   };
 
   const getInitialMessage = async () => {
@@ -45,14 +47,14 @@ const AppContextProvider = ({ children }) => {
       .from("chat")
       .select("*")
       .range(0, 10)
-      .order("id", { ascending: false });
+      .order("created_at", { ascending: false });
     setLoadingInitial(false);
     if (error) {
       setError(error.message);
       return;
     }
     setLoadingInitial(true);
-    await setMessage(data);
+    await setMessage(data.reverse());
   };
 
   const getMessageAndSubscribe = async () => {
@@ -82,6 +84,7 @@ const AppContextProvider = ({ children }) => {
         messageData,
         error,
         loadingInitial,
+        getMessageAndSubscribe
       }}
     >
       {children}
@@ -91,4 +94,5 @@ const AppContextProvider = ({ children }) => {
 
 const useAppContext = () => useContext(AppContext);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export { AppContext as default, AppContextProvider, useAppContext };

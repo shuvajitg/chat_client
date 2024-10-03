@@ -19,11 +19,7 @@ export default function Dashboard() {
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header toggleSidebar={toggleSidebar} />
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
-          <Routes>
-            <Route path="/" element={<DashboardContent />} />
-            <Route path="/contacts" element={<Contact />} />
-            <Route path="/message" element={<Chat />} />
-          </Routes>
+          
         </main>
       </div>
     </div>
