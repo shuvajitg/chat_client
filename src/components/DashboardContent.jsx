@@ -1,7 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
-
 const DashboardContent = () => {
     return (
       <div className="p-6">
