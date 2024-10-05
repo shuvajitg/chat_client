@@ -78,6 +78,10 @@ const AppContextProvider = ({ children }) => {
     }
   };
 
+  // const login = async () => {
+  //   const auth = 
+  // }
+
   return (
     <AppContext.Provider
       value={{

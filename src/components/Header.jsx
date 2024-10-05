@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 
 
 
+// eslint-disable-next-line react/prop-types
 const Header = ({ toggleSidebar }) => {
     return (
       <header className="bg-white shadow-md">
